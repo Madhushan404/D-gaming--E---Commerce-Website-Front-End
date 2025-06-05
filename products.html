@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-Computing - Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #181818;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+  
+        header {
+            background: linear-gradient(135deg, #0f1923, #1a2a3a);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff4655;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #ff4655;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #ff4655;
+        }
+
+   
+        .products-section {
+            padding: 120px 20px 60px;
+            background-color: #1a2a3a;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .products-header h1 {
+            font-size: 2.5rem;
+            color: #ff4655;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .products-header p {
+            color: #ece8e1;
+            font-size: 1.1rem;
+        }
+
+  
+        .filter-section {
+            background-color: #0f1923;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-button {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #ff4655;
+            background-color: transparent;
+            color: #ece8e1;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .filter-button:hover {
+            background-color: #ff4655;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .filter-button.active {
+            background-color: #ff4655;
+            color: #fff;
+        }
+
+    
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, #1a2a3a, #0f1923);
+            border: 1px solid #ff4655;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(255, 70, 85, 0.3);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #ff4655;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(15, 25, 35, 0.95), rgba(26, 42, 58, 0.95));
+        }
+
+        .product-info h3 {
+            color: #ff4655;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.4rem;
+        }
+
+        .product-features {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background-color: rgba(255, 70, 85, 0.1);
+            color: #ff4655;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid #ff4655;
+        }
+
+        .product-info p {
+            color: #ece8e1;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            color: #ff4655;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-price::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 2px;
+            background-color: #ff4655;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #ff4655;
+            background: transparent;
+            color: #ff4655;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .action-button:hover {
+            background: #ff4655;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .action-button i {
+            font-size: 1.1rem;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: linear-gradient(135deg, #0f1923, #1a2a3a);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                padding: 2rem;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .products-header h1 {
+                font-size: 2rem;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-button {
+                width: 100%;
+                max-width: 200px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .product-card {
+                margin-bottom: 1rem;
+            }
+
+            .product-image-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a href="index.html" class="logo">D-Computing</a>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="products.html" class="active">Products</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="products-section">
+        <div class="products-container">
+            <div class="products-header">
+                <h1>Our Products</h1>
+                <p>Discover our premium selection of gaming and computing products</p>
+            </div>
+
+            <section class="filter-section">
+                <div class="filter-container">
+                    <div class="filter-buttons">
+                        <button class="filter-button active" data-category="all">All Products</button>
+                        <button class="filter-button" data-category="gaming-pcs">Gaming PCs</button>
+                        <button class="filter-button" data-category="peripherals">Gaming Peripherals</button>
+                        <button class="filter-button" data-category="accessories">Gaming Accessories</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="products-grid">
+                <div class="product-card" data-category="gaming-pcs">
+                    <div class="product-image-container">
+                        <span class="product-badge">New</span>
+                        <img src="https://www.gamestreet.lk/images/products/7349.jpg" alt="Gaming PC" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3>Pro Gaming PC</h3>
+                        <div class="product-features">
+                            <span class="feature-tag">RTX 4090</span>
+                            <span class="feature-tag">Intel i9</span>
+                            <span class="feature-tag">32GB RAM</span>
+                        </div>
+                        <p>High-performance gaming PC with RTX 4090 and Intel i9 processor for ultimate gaming experience.</p>
+                        <span class="product-price">$2,999</span>
+                        <div class="product-actions">
+                            <button class="action-button">
+                                <i class="fas fa-heart"></i>
+                                Wishlist
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="peripherals">
+                    <div class="product-image-container">
+                        <span class="product-badge">Best Seller</span>
+                        <img src="https://dlcdnwebimgs.asus.com/gain/A2FAF3D0-A9EF-489D-B945-D6E287AD06EC/w717/h525/w273" alt="Gaming Mouse" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3>ASUS ROG MOUSE</h3>
+                        <div class="product-features">
+                            <span class="feature-tag">20,000 DPI</span>
+                            <span class="feature-tag">RGB</span>
+                            <span class="feature-tag">Programmable</span>
+                        </div>
+                        <p>RGB gaming mouse with 20,000 DPI and programmable buttons for precise control.</p>
+                        <span class="product-price">$89.99</span>
+                        <div class="product-actions">
+                            <button class="action-button">
+                                <i class="fas fa-heart"></i>
+                                Wishlist
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="peripherals">
+                    <div class="product-image-container">
+                        <img src="https://dlcdnwebimgs.asus.com/gain/EE775D8C-D6ED-45F7-83DB-2B275BDC772C/w717/h525/w273" alt="Gaming Keyboard" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3>ROG Gaming Keyboard</h3>
+                        <div class="product-features">
+                            <span class="feature-tag">Cherry MX</span>
+                            <span class="feature-tag">RGB</span>
+                            <span class="feature-tag">Anti-ghosting</span>
+                        </div>
+                        <p>RGB mechanical keyboard with Cherry MX switches for the perfect gaming experience.</p>
+                        <span class="product-price">$149.99</span>
+                        <div class="product-actions">
+                            <button class="action-button">
+                                <i class="fas fa-heart"></i>
+                                Wishlist
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image-container">
+                        <span class="product-badge">Premium</span>
+                        <img src="https://armaggeddon.id/wp-content/uploads/2023/02/Nuke-9.png" alt="Gaming Headset" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3>Pro Gaming Headset</h3>
+                        <div class="product-features">
+                            <span class="feature-tag">7.1 Surround</span>
+                            <span class="feature-tag">Noise-cancelling</span>
+                            <span class="feature-tag">RGB</span>
+                        </div>
+                        <p>7.1 surround sound gaming headset with noise-cancelling mic for crystal clear communication.</p>
+                        <span class="product-price">$129.99</span>
+                        <div class="product-actions">
+                            <button class="action-button">
+                                <i class="fas fa-heart"></i>
+                                Wishlist
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add scroll animation for header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(15, 25, 35, 0.95)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, #0f1923, #1a2a3a)';
+            }
+        });
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const category = button.getAttribute('data-category');
+
+                productCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Add animation to product cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.product-card').forEach((card) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease-out';
+            observer.observe(card);
+        });
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        navLinksItems.forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 
